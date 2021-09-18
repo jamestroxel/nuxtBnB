@@ -1,40 +1,86 @@
-export default function(context,inject) {
-    let mapLoaded = false
-    let mapWaiting = null
-    addScript()
-    inject('maps', {
-        showMap
-    })
-    function addScript(){
-        const script = document.createElement('script')
-        script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCo8P-ehAFwj_Azx3AzoqsG8ZzwfrWEBM4&libraries=places&callback=initMap"
-        script.async = true
-        window.initMap = initMap
-        document.head.appendChild(script)
-    }
+export default function(context, inject) {
+  let isLoaded = false;
+  let waiting = [];
+  window.initGoogleMaps = initGoogleMaps;
+  addScript();
+  inject("maps", {
+    showMap,
+    makeAutoComplete
+  });
+  function addScript() {
+    const script = document.createElement("script");
+    script.src =
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyCo8P-ehAFwj_Azx3AzoqsG8ZzwfrWEBM4&libraries=places&callback=initGoogleMaps";
+    script.async = true;
+    document.head.appendChild(script);
+  }
 
-    function initMap(){ 
-        mapLoaded = true
-        if (mapWaiting){
-            const { canvas, lat, lng } = mapWaiting
-            renderMap(canvas, lat, lng)
-            mapWaiting = null
+  function initGoogleMaps() {
+    isLoaded = true;
+    waiting.forEach((item)=>{
+        if(typeof item.fn === 'function'){
+            item.fn(...item.arguments)
         }
+    })
+    waiting = []
+  }
+  function makeAutoComplete(input){
+      if(!isLoaded){
+          waiting.push({ fn: makeAutoComplete, arguments })
+          return 
+      }
+      const autocomplete = new window.google.maps.places.Autocomplete(input, { types: [`(cities)`]})
+      autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace()
+          input.dispatchEvent(new CustomEvent('changed', { detail: place }))
+      })
+  }
+  function showMap(canvas, lat, lng, markers) {
+    if (!isLoaded) {
+      waiting.push({
+        fn: showMap,
+        arguments,
+      })
+      return
     }
-    function showMap(canvas, lat, lng) {
-        if(mapLoaded) renderMap(canvas, lat, lng)
-        else mapWaiting = { canvas, lat, lng }
+    const mapOptions = {
+      zoom: 18,
+      center: new window.google.maps.LatLng(lat, lng),
+      disableDefaultUI: true,
+      zoomControl: true,
+      styles: [{
+        featureType: 'poi.business',
+        elementType: 'labels.icon', 
+        stylers: [{
+          visibility: 'off'
+        }]
+      }]
     }
-    function renderMap(canvas, lat, lng){
-        const mapOptions = {
-            zoom: 18,
-            center: new window.google.maps.LatLng(lat,lng),
-            disableDefaultUI: true,
-            zoomControl: true
-        }
-        const map = new window.google.maps.Map(canvas, mapOptions)
-        const position = new window.google.maps.LatLng(lat, lng)
-        const marker = new window.google.maps.Marker({ position })
-        marker.setMap(map)
+    const map = new window.google.maps.Map(canvas, mapOptions);
+    if(!markers){
+      const position = new window.google.maps.LatLng(lat, lng);
+      const marker = new window.google.maps.Marker({ 
+        position,
+        clickable: false });
+      marker.setMap(map);
+      return
     }
+    const bounds = new window.google.maps.LatLngBounds()
+    markers.forEach((home) => {
+      const position = new window.google.maps.LatLng(home.lat, home.lng);
+      const marker = new window.google.maps.Marker({ 
+        position,
+        label: {
+          text: `$${home.pricePerNight}`,
+          className: `marker home-${home.id}`
+        }, 
+        icon: 'https://maps.gstatic.com/mapfiles/transparent.png',
+        clickable: false
+      })
+      marker.setMap(map)
+      bounds.extend(position)
+    })
+
+    map.fitBounds(bounds)
+  }
 }

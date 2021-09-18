@@ -1,10 +1,5 @@
 import Vue from 'vue'
-import { wrapFunctional } from './utils'
-
-const components = {
-  HomeCard: () => import('../../components/HomeCard.vue' /* webpackChunkName: "components/home-card" */).then(c => wrapFunctional(c.default || c)),
-  ShortText: () => import('../../components/ShortText.vue' /* webpackChunkName: "components/short-text" */).then(c => wrapFunctional(c.default || c))
-}
+import * as components from './index'
 
 for (const name in components) {
   Vue.component(name, components[name])

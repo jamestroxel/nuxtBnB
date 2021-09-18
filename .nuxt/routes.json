@@ -1,16 +1,32 @@
 [
   {
+    "name": "admin",
+    "path": "/admin",
+    "component": "/Users/jamestroxel/Desktop/projects/nuxtBnB/pages/admin.vue",
+    "chunkName": "pages/admin"
+  },
+  {
+    "name": "no-access",
+    "path": "/no-access",
+    "component": "/Users/jamestroxel/Desktop/projects/nuxtBnB/pages/no-access.vue",
+    "chunkName": "pages/no-access"
+  },
+  {
+    "name": "search",
+    "path": "/search",
+    "component": "/Users/jamestroxel/Desktop/projects/nuxtBnB/pages/search.vue",
+    "chunkName": "pages/search"
+  },
+  {
     "name": "home-id",
     "path": "/home/:id?",
     "component": "/Users/jamestroxel/Desktop/projects/nuxtBnB/pages/home/_id.vue",
-    "chunkName": "pages/home/_id",
-    "_name": "_dfcaa664"
+    "chunkName": "pages/home/_id"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/Users/jamestroxel/Desktop/projects/nuxtBnB/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_1194ef3e"
+    "chunkName": "pages/index"
   }
 ]
