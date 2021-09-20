@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/search", (function(a){return {data:[{homes:a,label:a,lat:a,lng:a}],fetch:{},mutations:[]}}(void 0)));
