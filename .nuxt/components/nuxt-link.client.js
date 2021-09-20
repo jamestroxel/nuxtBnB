@@ -30,7 +30,7 @@ export default {
   props: {
     prefetch: {
       type: Boolean,
-      default: false
+      default: true
     },
     noPrefetch: {
       type: Boolean,

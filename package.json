@@ -1,6 +1,7 @@
 {
   "name": "mastering-nuxt",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cookie": "^0.4.1",
     "google-auth-library": "^7.9.1",
     "js-cookie": "^3.0.1",
@@ -9,11 +10,14 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start"
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^4.2.1",
     "autoprefixer": "^9.8.6",
+    "gh-pages": "^3.2.3",
     "postcss": "^7.0.36",
     "sass": "^1.38.0",
     "sass-loader": "^10.2.0",

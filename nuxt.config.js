@@ -12,9 +12,6 @@ export default {
             charset: 'utf-8'
         }],
     }, 
-    router: {
-        prefetchLinks: false
-    },
     plugins: [ "~/plugins/maps.client", '~/plugins/dataApi', '~/plugins/auth.client' ],
     modules: [ '~/modules/auth',  '~/modules/algolia'],
     buildModules:['@nuxtjs/tailwindcss'],
@@ -40,5 +37,10 @@ export default {
             appId: 'FZ41WDKTPR',
             key: 'e0d7d09f8971d35e795e945f98679a57'
         }
-    }
+    },
+    target: 'static',
+    router: {
+      base: '/nuxtBnB/',
+      prefetchLinks: false
+   },
 }
